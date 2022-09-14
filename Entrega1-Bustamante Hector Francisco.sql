@@ -7,7 +7,7 @@ create table Empleados (
 Id_empleado int primary key auto_increment not null ,
 Nombre varchar (30),
 Direccion varchar (30),
-Telefono int ,
+Telefono varchar (30),
 Mail varchar (30) 
 );
 
@@ -15,7 +15,7 @@ create table Proveedores (
 Id_proveedor int primary key auto_increment not null ,
 Nombre varchar (30),
 Direccion varchar (30),
-Telefono int ,
+Telefono varchar (30),
 Mail varchar (30) 
 );
 
@@ -28,7 +28,7 @@ Nombre varchar (30)
  Id_producto int  primary key auto_increment not null ,
  Descripcion varchar (30),
  Marca	varchar (30),
- Precio decimal (1.2) ,
+ Precio decimal (7.2) ,
  Id_proveedor int not null,
  Id_categoria int not null,
  foreign key (Id_proveedor) references Proveedores (Id_proveedor),
@@ -38,7 +38,7 @@ Nombre varchar (30)
  create table Ventas (
 Id_venta int primary key auto_increment not null ,
 Fecha datetime ,
-Total decimal (1.2),
+Total decimal (7.2),
 Id_producto int,
 Id_empleado int,
 foreign key (Id_producto) references Productos (Id_producto),
