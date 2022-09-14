@@ -26,7 +26,6 @@ Nombre varchar (30)
 
  create table Productos (
  Id_producto int  primary key auto_increment not null ,
- Nombre 	varchar (30),
  Descripcion varchar (30),
  Marca	varchar (30),
  Precio decimal (1.2) ,
