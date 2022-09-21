@@ -1,0 +1,51 @@
+use ttc;
+CREATE VIEW Detalle_Productos as
+
+select a.descripcion, a.marca, b.nombre as Categoria, c.nombre as Proveedor, c.Telefono, c.mail
+from productos a 
+inner join categorias b
+on b.id_categoria = a.id_categoria 
+inner join proveedores c
+on c.id_proveedor = a.id_proveedor;
+
+/*select * from Detalle_Productos*/
+
+CREATE VIEW UltimasVentas as
+select v.Id_venta NroVenta, p.descripcion as Producto, p.marca as Marca, v.total as Total, e.nombre as Empleado from ventas v
+inner join productos p
+on p.Id_producto = v.Id_producto
+inner join empleados e
+on e.Id_empleado = v.Id_empleado
+where v.fecha between (curdate()-3) and curdate();
+
+ /*select * from UltimasVentas*/
+ 
+ 
+ CREATE VIEW Cant_Ventas_por_empleado as
+ select e.nombre as Empleado, count(v.id_empleado) as Ventas_Realizadas
+ from ventas v
+ inner join empleados e 
+ on e.Id_empleado = v.id_empleado
+ group by v.Id_empleado;
+ 
+  /*select * from Cant_Ventas_por_empleado */ 
+  
+CREATE VIEW EmpleadoConMasVentas as 
+  
+select empleado as Empleado, Ventas_realizadas
+from Cant_Ventas_por_empleado
+ where ventas_realizadas = (select max(ventas_realizadas) from Cant_Ventas_por_empleado);
+ 
+/*select * from EmpleadoConMasVentas */ 
+
+CREATE VIEW Total_ventas_por_dia as
+select fecha, count(fecha) as total from ventas
+group by fecha;
+
+/*select * from Total_ventas_por_dia */ 
+
+CREATE VIEW FechaConMasVentas as
+select * from Total_ventas_por_dia 
+where total = (select max(total) from Total_ventas_por_dia)
+
+/*select * from FechaConMasVentas */
