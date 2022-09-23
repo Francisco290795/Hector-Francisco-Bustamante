@@ -27,12 +27,6 @@ values ('Jose Sad','Chacabuco','3814598789','joseS@gmail.com'),
 ('Leo Alderete','Don Bosco 569','3814789582','leoal@gmail.com');
 
 
-insert into categorias (nombre) values ('frenos'),
- ('amortiguadores'),
- ('bujias'),
- ('cadenas'),
- ('balancines'),
- ('baterias');
  
 insert into categorias (Nombre)
 values ('Frenos'),
@@ -45,27 +39,28 @@ values ('Frenos'),
 ('Carburadores'),
 ('Bujias');
 
-insert into productos (Descripcion, Marca, Precio, Id_proveedor, Id_categoria )
-values ('GUANTES','Yamaha','3000.00','1','1'),
-('AMORTIGUADOR PAR ','Honda','3400.00','2','3'),
-('ARO FARO AX 100 2 2.00','Vector','2640.00','5','2'),
-('ASIENTO GN 1 ','Bajaj','3650.00','1','4'),
-('BANDA DE FRENOS (NIKKI)','Motomel','2000.00','4','2'),
-('ARANDELA ','Rouser','1550.00','3','5'),
-('ACEITE ULTRALUB 10W','Yamaha','1200.00','5','4');
+ insert into productos (Descripcion, Marca, Precio, cantidadp, Id_proveedor, Id_categoria )
+values ('GUANTES','Yamaha','3000.00','6','1','1'),
+('AMORTIGUADOR PAR ','Honda','3400.00','4','2','3'),
+('ARO FARO AX 100 2 2.00','Vector','2640.00','5','5','2'),
+('ASIENTO GN 1 ','Bajaj','3650.00','10','1','4'),
+('BANDA DE FRENOS (NIKKI)','Motomel','2000.00','15','4','2'),
+('ARANDELA ','Rouser','1550.00','19','3','5'),
+('ACEITE ULTRALUB 10W','Yamaha','1200.00','12','5','4');
 
 
-insert into ventas (Fecha, Total,  Id_producto, Id_empleado )
-values ('2022-07-25', '3000','1','3'),
-('2022-04-25', '5655','1','2'),
-('2022-08-06', '4520','2','3'),
-('2022-01-24', '2500','3','5'),
-('2022-07-03', '3050','4','4'),
-('2022-05-14', '2560','1','5'),
-('2022-03-17', '4520','3','9'),
-('2022-05-25', '5075','3','1'),
-('2022-08-19', '3350','3','3'),
-('2022-06-08', '5000','3','6');
+insert into ventas (Fecha, Total, cantidad, Id_producto, Id_empleado )
+values ('2022-07-25', '3000','3','2','3'),
+('2022-04-25', '5655','2','5','2'),
+('2022-08-06', '4520','5','2','3'),
+('2022-01-24', '2500','1','3','5'),
+('2022-07-03', '3050','3','4','4'),
+('2022-05-14', '2560','4','1','5'),
+('2022-03-17', '4520','3','3','9'),
+('2022-05-25', '5075','1','3','1'),
+('2022-08-19', '3350','6','3','3'),
+('2022-06-08', '5000','4','3','6');
+
 
 
 
