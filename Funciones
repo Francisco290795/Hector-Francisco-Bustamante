@@ -1,0 +1,26 @@
+CREATE DEFINER=`root`@`localhost` FUNCTION `calcular`(cantidad int, precio decimal) RETURNS decimal(10,0)
+    NO SQL
+BEGIN
+declare subtotal decimal;
+declare iva int;
+declare total decimal;
+declare total_final decimal;
+set subtotal = cantidad * precio;
+set iva = 21;
+set total = (subtotal * iva ) / 100;
+set total_final = subtotal + total;
+RETURN total_final;
+END
+
+
+
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `empleadoultimaventa`(venta int) RETURNS int
+    NO SQL
+BEGIN
+declare venta int;
+
+set venta = (select id_empleado from ventas where id_venta = venta);
+
+RETURN venta;
+END
