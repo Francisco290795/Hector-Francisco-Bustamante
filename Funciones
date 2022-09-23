@@ -15,12 +15,14 @@ END
 
 
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `empleadoultimaventa`(venta int) RETURNS int
-    NO SQL
+CREATE DEFINER=`root`@`localhost` FUNCTION `Emp_ult_venta`(IdVenta int) RETURNS varchar(100) CHARSET utf8mb4 COLLATE utf8mb4_es_0900_ai_ci
+    READS SQL DATA
 BEGIN
-declare venta int;
+declare empleado varchar(100);
 
-set venta = (select id_empleado from ventas where id_venta = venta);
 
-RETURN venta;
+set empleado = (select e.nombre from ventas v
+inner join empleados e
+on e.id_empleado = v.id_empleado where id_venta = IdVenta);
+RETURN empleado;
 END
