@@ -19,16 +19,18 @@ Telefono varchar (30),
 Mail varchar (30) 
 );
 
+
 create table Categorias (
 Id_categoria int primary key auto_increment not null ,
 Nombre varchar (30)
 );
 
- create table Productos (
+create table Productos (
  Id_producto int  primary key auto_increment not null ,
  Descripcion varchar (30),
  Marca	varchar (30),
  Precio decimal (7.2) ,
+ cantidadp int,
  Id_proveedor int not null,
  Id_categoria int not null,
  foreign key (Id_proveedor) references Proveedores (Id_proveedor),
@@ -39,8 +41,10 @@ Nombre varchar (30)
 Id_venta int primary key auto_increment not null ,
 Fecha datetime ,
 Total decimal (7.2),
+cantidad int,
 Id_producto int,
 Id_empleado int,
 foreign key (Id_producto) references Productos (Id_producto),
 foreign key (Id_empleado) references Empleados (Id_empleado)
-)
+);
+
