@@ -48,6 +48,17 @@ foreign key (Id_producto) references Productos (Id_producto),
 foreign key (Id_empleado) references Empleados (Id_empleado)
 );
 
+create table eventos (
+ideventos int primary key not null auto_increment,
+tabla varchar (100),
+accion varchar (100),
+mensaje varchar (100),
+usuario varchar (100),
+fecha date not null	,
+hora time not null
+);
+
+
 use ttc;
 
 insert into empleados (nombre, direccion, telefono, mail)
