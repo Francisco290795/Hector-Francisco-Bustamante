@@ -238,3 +238,64 @@ end;
 end case;
 end
 //
+
+
+
+DELIMITER $$
+CREATE TRIGGER tr_eventos_delete
+before delete on ventas
+for each row 
+begin
+
+INSERT INTO EVENTOS (tabla, accion, mensaje,  usuario, fecha, hora)
+values ('ventas', 'elminaventa', concat ( 'Se elimino la venta',old.id_venta), user(), current_date(), now());
+
+
+END $$
+
+
+
+DELIMITER $$
+CREATE TRIGGER tr_eventos_insert
+after insert on ventas
+for each row 
+begin
+
+INSERT INTO EVENTOS (tabla, accion, mensaje, usuario, fecha, hora)
+values ('ventas', 'ingresoventa', concat ( 'Se inserto la venta',new.id_venta) , user(), current_date(), now());
+
+
+END $$
+
+
+
+DELIMITER $$
+CREATE TRIGGER tr_eventos_update
+before update on productos
+for each row 
+begin
+
+INSERT INTO EVENTOS (tabla, accion, mensaje, usuario, fecha, hora)
+values ('ventas', 'cambioproducto',concat ( 'Se modifico el precio del producto', old.id_producto, 'antes era',old.precio, 'ahora es', new.precio),
+user(), current_date(), now());
+
+
+
+END $$
+
+
+
+DELIMITER $$
+CREATE TRIGGER tr_eventos_insert
+after insert on productos
+for each row 
+begin
+
+INSERT INTO EVENTOS (tabla, accion, mensaje, usuario, fecha, hora)
+values ('ventas', 'ingresoventa', concat ( 'Se inserto el producto',new.id_producto) , user(), current_date(), now());
+
+
+END $$
+
+
+
