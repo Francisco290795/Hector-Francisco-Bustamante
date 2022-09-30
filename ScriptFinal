@@ -267,7 +267,7 @@ END $$
 
 
 DELIMITER $$
-CREATE TRIGGER tr_eventos_insert
+CREATE TRIGGER tr_eventos_insert_ventas
 after insert on ventas
 for each row 
 begin
@@ -297,13 +297,13 @@ END $$
 
 
 DELIMITER $$
-CREATE TRIGGER tr_eventos_insert
+CREATE TRIGGER tr_eventos_insert_productos
 after insert on productos
 for each row 
 begin
 
 INSERT INTO EVENTOS (tabla, accion, mensaje, usuario, fecha, hora)
-values ('ventas', 'ingresoventa', concat ( 'Se inserto el producto',new.id_producto) , user(), current_date(), now());
+values ('ventas', 'ingresoproducto', concat ( 'Se inserto el producto',new.id_producto) , user(), current_date(), now());
 
 
 END $$
