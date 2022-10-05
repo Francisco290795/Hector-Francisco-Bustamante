@@ -1,0 +1,329 @@
+CREATE DATABASE  `TTC`  DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_es_0900_ai_ci 
+DEFAULT ENCRYPTION='N' ;
+ 
+USE TTC;
+
+create table Empleados (
+Id_empleado int primary key auto_increment not null ,
+Nombre varchar (30),
+Direccion varchar (30),
+Telefono varchar (30),
+Mail varchar (30) 
+);
+
+create table Proveedores (
+Id_proveedor int primary key auto_increment not null ,
+Nombre varchar (30),
+Direccion varchar (30),
+Telefono varchar (30),
+Mail varchar (30) 
+);
+
+
+create table Categorias (
+Id_categoria int primary key auto_increment not null ,
+Nombre varchar (30)
+);
+
+create table Productos (
+ Id_producto int  primary key auto_increment not null ,
+ Descripcion varchar (30),
+ Marca	varchar (30),
+ Precio decimal (7.2) ,
+ cantidadp int,
+ Id_proveedor int not null,
+ Id_categoria int not null,
+ foreign key (Id_proveedor) references Proveedores (Id_proveedor),
+ foreign key (Id_categoria) references Categorias (Id_categoria)
+ );
+ 
+ create table Ventas (
+Id_venta int primary key auto_increment not null ,
+Fecha datetime ,
+Total decimal (7.2),
+cantidad int,
+Id_producto int,
+Id_empleado int,
+foreign key (Id_producto) references Productos (Id_producto),
+foreign key (Id_empleado) references Empleados (Id_empleado)
+);
+
+create table eventos (
+ideventos int primary key not null auto_increment,
+tabla varchar (100),
+accion varchar (100),
+mensaje varchar (100),
+usuario varchar (100),
+fecha date not null	,
+hora time not null
+);
+
+
+use ttc;
+
+insert into empleados (nombre, direccion, telefono, mail)
+values ('Jose Gonzalez','Chacabuco','3814825896','jose@gmail.com'),
+('Lucas Ramirez','Mitre 260','3814789582','lura@outlook.com'),
+('Fernando Paez','Bolivar 682','3814569878','ferpa@gmail.com'),
+('Jose Sosa','Sargento Cabral 52','3814659848','josesosa@gmail.com'),
+('Mauro Jaluf','Salta 9874','3813548963','maurolj@gmail.com'),
+('Pablo Cano','Sarmiento 5449','3813284859','pabo@gmail.com'),
+('Gian Camoglio','Roca 51','381848989','lucas24@gmail.com'),
+('Mauricio Frias','Jujuy 986','3815698956','fgs24@gmail.com'),
+('Cristian Gutierrez','Utinger 26','3812659845','CrisF@gmail.com'),
+('Enzo Teruel','Monteagudo 987','3813598475','enzo@gmail.com'),
+('Javier Carrera','Peru 587','38147878965','javi_14@gmail.com'),
+('Andres Carrizo','Alberdi 9865','3814745882','andy_cero@hoymail.com');
+
+insert into proveedores (nombre, direccion, telefono, mail)
+values ('Jose Sad','Chacabuco','3814598789','joseS@gmail.com'),
+('Gabriel Luna','Mendoza 85','3814789582','lunaga24@gmail.com'),
+('Nicolas Carrizo','Las Piedras 588','3813654143','nicocarrizo@hotmail.com'),
+('Guadalupe Nuñez','Mitre 260','3815648215','lguada24@gmail.com'),
+('Gabriela Barboza','Av colon 454','3813545698','gabibar@gmail.com'),
+('Ruben Avila','Rivadavia','38147654','elcraken@gmail.com'),
+('Maximiliano Aguirre','Bolivia 1569','3814789654','maxi93@gmail.com'),
+('Santiago Peralta','Benjamin Matienzo','3814569852','santi@gmail.com'),
+('Florencia Perez','Adolfo de la vega 56','38147854654','flopy@gmail.com'),
+('Leo Alderete','Don Bosco 569','3814789582','leoal@gmail.com');
+
+
+ 
+insert into categorias (Nombre)
+values ('Frenos'),
+('Amortiguadores'),
+('Aros'),
+('Cadenas'),
+('Asientos'),
+('Cascos'),
+('Balancines'),
+('Carburadores'),
+('Bujias');
+
+ insert into productos (Descripcion, Marca, Precio, cantidadp, Id_proveedor, Id_categoria )
+values ('GUANTES','Yamaha','3000.00','6','1','1'),
+('AMORTIGUADOR PAR ','Honda','3400.00','4','2','3'),
+('ARO FARO AX 100 2 2.00','Vector','2640.00','5','5','2'),
+('ASIENTO GN 1 ','Bajaj','3650.00','10','1','4'),
+('BANDA DE FRENOS (NIKKI)','Motomel','2000.00','15','4','2'),
+('ARANDELA ','Rouser','1550.00','19','3','5'),
+('ACEITE ULTRALUB 10W','Yamaha','1200.00','12','5','4');
+
+insert into ventas (Fecha, Total, cantidad, Id_producto, Id_empleado )
+values ('2022-07-25', '3000','3','2','3'),
+('2022-04-25', '5655','2','5','2'),
+('2022-08-06', '4520','5','2','3'),
+('2022-01-24', '2500','1','3','5'),
+('2022-07-03', '3050','3','4','4'),
+('2022-05-14', '2560','4','1','5'),
+('2022-03-17', '4520','3','3','9'),
+('2022-05-25', '5075','1','3','1'),
+('2022-05-25', '3350','6','3','3'),
+('2022-05-25', '5000','4','3','6'),
+('2022-09-28', '6200','3','2','5'),
+('2022-09-25', '1450','3','2','5'),
+('2022-09-25', '3700','6','5','4'),
+(curdate(), '2550','6','5','4'),
+(curdate(), '5550','6','5','4');
+
+
+use ttc;
+CREATE VIEW Detalle_Productos as
+
+select a.descripcion, a.marca, b.nombre as Categoria, c.nombre as Proveedor, c.Telefono, c.mail
+from productos a 
+inner join categorias b
+on b.id_categoria = a.id_categoria 
+inner join proveedores c
+on c.id_proveedor = a.id_proveedor;
+
+/*select * from Detalle_Productos*/
+
+CREATE VIEW VentasDiaActual as
+select v.Id_venta NroVenta, p.descripcion as Producto, p.marca as Marca, v.total as Total, e.nombre as Empleado from ventas v
+inner join productos p
+on p.Id_producto = v.Id_producto
+inner join empleados e
+on e.Id_empleado = v.Id_empleado
+where v.fecha = curdate();
+ 
+ /*select * from VentasDiaActual*/
+ 
+ CREATE VIEW Cant_Ventas_por_empleado as
+ select e.nombre as Empleado, count(v.id_empleado) as Ventas_Realizadas
+ from ventas v
+ inner join empleados e 
+ on e.Id_empleado = v.id_empleado
+ group by v.Id_empleado;
+ 
+  /*select * from Cant_Ventas_por_empleado */ 
+  
+  
+  
+CREATE VIEW EmpleadoConMasVentas as 
+  
+select empleado as Empleado, Ventas_realizadas
+from Cant_Ventas_por_empleado
+ where ventas_realizadas = (select max(ventas_realizadas) from Cant_Ventas_por_empleado)
+ order by Ventas_realizadas;
+ 
+/*select * from EmpleadoConMasVentas */ 
+
+
+
+
+CREATE VIEW Total_ventas_por_dia as
+select fecha, count(fecha) as total from ventas
+group by fecha order by total desc;
+
+/*select * from Total_ventas_por_dia */ 
+
+
+
+
+CREATE VIEW FechaConMasVentas as
+select * from Total_ventas_por_dia 
+where total = (select max(total) from Total_ventas_por_dia);
+
+/*select * from FechaConMasVentas */
+
+
+
+
+
+
+use ttc;
+DELIMITER //
+CREATE FUNCTION `calcular`(cantidad int, precio decimal) RETURNS decimal(10,0)
+    NO SQL
+BEGIN
+declare subtotal decimal;
+declare iva int;
+declare total decimal;
+declare total_final decimal;
+set subtotal = cantidad * precio;
+set iva = 21;
+set total = (subtotal * iva ) / 100;
+set total_final = subtotal + total;
+RETURN total_final;
+END
+//
+/*select calcular (3, 3000);*/
+
+DELIMITER //
+CREATE FUNCTION `Emp_ult_venta`(IdVenta int) RETURNS varchar(100) CHARSET utf8mb4 COLLATE utf8mb4_es_0900_ai_ci
+    READS SQL DATA
+BEGIN
+declare empleado varchar(100);
+set empleado = (select e.nombre from ventas v
+inner join empleados e
+on e.id_empleado = v.id_empleado where id_venta = IdVenta);
+RETURN empleado;
+END
+//
+
+/*select Emp_ult_venta (3);*/
+
+
+
+
+Use ttc;
+DELIMITER //
+CREATE PROCEDURE InsertarVenta (IN id int , cantidad int, idemp int ) 
+begin 
+declare primervar decimal(7.2);
+declare segundavar int;
+declare tercervar int;
+declare cuartavar int;
+set primervar = (select precio from productos where id_producto = id);
+set segundavar = primervar * cantidad;
+insert into ventas (Fecha, Total, cantidad, Id_producto, Id_empleado) values (curdate(), segundavar, cantidad, id, idemp );
+set tercervar = (select cantidadp from productos where id_producto = id);
+set cuartavar = tercervar - cantidad;
+update productos set cantidadp = cuartavar where Id_producto = id;
+end
+//
+
+/* call InsertarVenta (1, 2, 1) */
+
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ListarVentasPorCriterio`(IN Campo varchar(100), IN Orden varchar (100))
+begin 
+
+case Campo when 'Fecha' 
+then
+if Orden = 'Asc'
+then
+select Fecha from ventas order by Fecha asc;
+else if Orden = 'desc'
+then
+select Fecha from ventas order by Fecha desc;
+else 
+select 'El orden indicado no es valido'
+end;
+end if;
+end if;
+else 
+select 'El campo indicado no es valido' 
+end;
+end case;
+end
+//
+
+
+
+DELIMITER $$
+CREATE TRIGGER tr_eventos_delete
+before delete on ventas
+for each row 
+begin
+
+INSERT INTO EVENTOS (tabla, accion, mensaje,  usuario, fecha, hora)
+values ('ventas', 'elminaventa', concat ( 'Se elimino la venta',old.id_venta), user(), current_date(), now());
+
+
+END $$
+
+
+
+DELIMITER $$
+CREATE TRIGGER tr_eventos_insert_ventas
+after insert on ventas
+for each row 
+begin
+
+INSERT INTO EVENTOS (tabla, accion, mensaje, usuario, fecha, hora)
+values ('ventas', 'ingresoventa', concat ( 'Se inserto la venta',new.id_venta) , user(), current_date(), now());
+
+
+END $$
+update productos set precio = 1500 where id_producto = 1
+
+select * from eventos
+DELIMITER $$
+CREATE TRIGGER tr_eventos_update
+before update on productos
+for each row 
+begin
+
+INSERT INTO EVENTOS (tabla, accion, mensaje, usuario, fecha, hora)
+values ('ventas', 'cambioproducto',concat ( 'Se modifico el precio del producto', old.id_producto, 'antes era',old.precio, 'ahora es', new.precio),
+user(), current_date(), now());
+
+
+
+END $$
+
+
+
+DELIMITER $$
+CREATE TRIGGER tr_eventos_insert_productos
+after insert on productos
+for each row 
+begin
+
+INSERT INTO EVENTOS (tabla, accion, mensaje, usuario, fecha, hora)
+values ('ventas', 'ingresoproducto', concat ( 'Se inserto el producto',new.id_producto) , user(), current_date(), now());
+
+
+END $$
