@@ -1,0 +1,8 @@
+use mysql;
+CREATE user 'Francisco'@'localhost' identified by 'ContraFran';
+CREATE user 'Mauro'@'localhost' identified by 'ContraMauro';
+select * from user;
+GRANT SELECT  ON ttc.* TO 'Francisco'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON ttc.* TO 'Mauro'@'localhost';
+show grants for 'Franciso'@'localhost';
+show grants for 'Mauro'@'localhost';
