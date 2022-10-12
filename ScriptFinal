@@ -317,3 +317,54 @@ GRANT SELECT  ON ttc.* TO 'Francisco'@'localhost';
 GRANT SELECT, INSERT, UPDATE ON ttc.* TO 'Mauro'@'localhost';
 show grants for 'Franciso'@'localhost';
 show grants for 'Mauro'@'localhost';
+
+
+
+select @@autocommit;
+set autocommit = 0; -- Cambiamos el autocommit a '0'.
+use ttc;
+
+-- PRIMER TABLA "PRODUCTOS"
+
+select * from productos; -- Verificamos los registros que ya existen en la tabla productos.
+start transaction; -- Iniciamos la transaccion.
+delete from productos 
+where id_producto in (6,7); -- Eliminamos los productos que tengan el id_producto 6 y 7.
+select * from productos; -- Verificamos que se eliminaron esos registros.
+
+/*rollback*/ -- Con este comando retrocedemos la accion de eliminar los registros de la tabla productos.
+select * from productos; -- Verificamos que los productos con id_producto 6 y 7 estan nuevamente en la tabla.
+
+/*commit*/ 
+/*Si ejecutamos este comando despues de haber eliminado los registros y antes de haber ejecutado el comando rollback,
+ se guardaran los cambios en la tabla y los productos con id_producto 6 y 7 seran eliminados para siempre de la tabla productos.*/
+ 
+
+-- SEGUNDA TABLA "VENTAS"
+
+
+select * from ventas;
+start transaction;
+insert into ventas (Fecha, Total, cantidad, Id_producto, Id_empleado )
+values
+ ('2022-10-25', '3000','3','2','3'),
+('2022-10-25', '5655','2','5','2'),
+('2022-10-06', '4520','5','2','3'),
+('2022-10-24', '2550','1','3','5');
+savepoint primer_bloque; 
+-- Este comando guarda todas las sentencias anteriores comenzando desde START TRANSACTION. En este caso la insercion de 4 registros.
+
+insert into ventas (Fecha, Total, cantidad, Id_producto, Id_empleado )
+values
+('2022-11-03', '3370','3','4','4'),
+('2022-11-14', '2560','4','1','5'),
+('2022-11-17', '4520','3','3','9'),
+('2022-11-25', '5075','1','3','1');
+savepoint segundo_bloque;
+-- Este comando guarda todas las sentencias anteriores comenzando desde START TRANSACTION. En este caso la insercion de 8 registros.
+
+/*release savepoint primer_bloque*/  -- Este comando eliminara el savepoint y ya no podremos usar un rollback sobre el mismo.
+
+/*rollback to primer_bloque*/ -- Si queremos ejecutar este comando nos dara error porque en la linea de arriba eliminamos el savepoint primer_bloque.
+
+
